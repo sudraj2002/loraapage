@@ -30,7 +30,7 @@
         }
     </style>
 
-    <title>AWRaCLe</title>
+    <title>Low-rank Adaptation-based All-Weather Removal for Autonomous Navigation</title>
 
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
@@ -64,7 +64,7 @@
             <div class="container is-max-desktop">
                 <div class="columns is-centered">
                     <div class="column has-text-centered">
-                        <h1 class="title is-2 publication-title"> <i>AWRaCLe</i> : All-Weather Image Restoration using Visual In-Context Learning
+                        <h1 class="title is-5 publication-title"> Low-rank Adaptation-based All-Weather Removal for Autonomous Navigation
                         </h1>
                         <div class="is-size-5 publication-authors">
                             <!-- Group of first four authors -->
@@ -80,7 +80,7 @@
                         </div>
 
 
-                        <div class="is-size-5 publication-authors">
+                        <div class="is-size-2 publication-authors">
                             <span class="author-block">Johns Hopkins University</span>
                         </div>
 
@@ -101,7 +101,7 @@
                                         <span>Paper</span>
                                     </a>
                                 </span> -->
-                                <!-- <span class="link-block">
+            <!-- <span class="link-block">
                 <a href=""
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
@@ -119,7 +119,7 @@
                                         <span>Arxiv</span>
                                     </a>
                                 </span>
-                                <span class="link-block">
+                                <!-- <span class="link-block">
                                     <a href=""
                                         class="external-link button is-normal is-rounded is-dark">
                                         <span class="icon">
@@ -127,7 +127,7 @@
                                         </span>
                                         <span>Code (Coming Soon!)</span>
                                     </a>
-                                </span>
+                                </span> -->
                             </div>
                         </div>
 
@@ -142,25 +142,32 @@
             <!-- Abstract. -->
             <div class="columns is-centered has-text-centered">
                 <div class="column is-four-fifths">
-                    <img src="./static/images/intro.png" alt="" style="border:0; height:500px; width:1500px;">
-                        <div class="content has-text-justified">
-                        <p>
-                          Illustration of AWRaCLe: Our visual in-context learning approach for all-weather image restoration. Given a context pair (first two rows), AWRaCLe extracts 
-                          relevant degradation context from it to restore a query image. Our method also performs selective removal of haze and snow from an image containing their mixture as shown in (d) and (e).
-                        </p>
-                        </div>
+                   
                     <h2 class="title is-3">Abstract</h2>
                     
                     <div class="content has-text-justified">
                         <p>
-                            We tackle the challenging task of All-Weather Image Restoration (AWIR) under adverse weather conditions. Prior works do not utilize degradation-specific visual contextual guidance during training. Consequently, their performance is
-                            limited by the degradation cues that are learnt from individual training samples.  We propose <b>A</b>ll-<b>W</b>eather Image <b>R</b>estor<b>a</b>tion using Visual In-<b>C</b>ontext <b>Le</b>arning 
-                            (AWRaCLe), a novel approach for AWIR which leverages degradation-specific visual context information as a prior to enhance the restoration performance. Our approach incorporates Degradation Context Extraction (DCE) and Context Fusion (CF) to seamlessly integrate degradation-specific features from the context 
-                            into an image restoration network. 
-                            The proposed DCE and CF modules leverage CLIP features and incorporate attention mechanisms to adeptly learn and fuse contextual information.  
-                            AWRaCLe achieves state-of-the-art performance on standard all-weather image restoration benchmarks.
+                            All-weather image restoration (AWIR) is crucial for reliable autonomous navigation under adverse weather conditions. 
+                            AWIR models are trained to address a specific set of weather conditions such as fog, rain, and snow. 
+                            But this causes them to often struggle with out-of-distribution (OoD) samples or unseen degradations 
+                            which limits their effectiveness for real-world autonomous navigation. To overcome this issue, existing models must either be retrained or 
+                            fine-tuned, both of which are inefficient and impractical, with retraining needing access to large datasets, and fine-tuning involving many parameters.  
+                            In this paper, we propose using Low-Rank Adaptation (LoRA) to efficiently adapt a pre-trained all-weather model to novel weather restoration tasks. 
+                            Furthermore, we observe that LoRA lowers the performance of the adapted model on the pre-trained restoration tasks. To address this issue, we introduce a
+                            LoRA-based fine-tuning method called LoRA-Align (LoRA-A) which seeks to align the singular vectors of the fine-tuned and pre-trained weight matrices 
+                            using Singular Value Decomposition (SVD). This alignment helps preserve the model's knowledge of its original tasks while adapting it to unseen tasks. 
+                            We show that images restored with LoRA and LoRA-A can be effectively used for computer vision tasks in autonomous navigation, such as 
+                            semantic segmentation and depth estimation. 
                         </p>
                     </div>
+                     <img src="./static/images/wacv2025.png" alt="" style="border:0; height:500px; width:1500px;">
+                        <div class="content has-text-justified">
+                        <p>
+                          The AWIR model shown above is pre-trained for fog, rain and snow, for which it works well. 
+                            However, it fails for the novel or unseen task of raindrop removal. 
+                            The performance for raindrop removal improves significantly after parameter efficient adaptation using LoRA.
+                        </p>
+                        </div>
                 </div>
             </div>
             <!--/ Abstract. -->
@@ -178,9 +185,13 @@
 
                                 <img src="./static/images/block.png" alt="" border=0 height=500 width=1500></img></
                                 <p>
-                                    AWRaCLe integrates degradation-specific information from a context pair to facilitate the image restoration process. 
-                                    Initially, CLIP features are extracted from the context pair and fed into Degradation Context Extraction (DCE) blocks at various levels of the decoder within the image restoration network. 
-                                    The Context Fusion (CF) blocks then fuse the degradation information obtained from the DCE blocks with the decoder features of the query image requiring restoration. Finally, the restored image is generated.
+                                    Illustration of the working of (a) LoRA and (b) LoRA-Align (LoRA-A). LoRA-A uses SVD to obtain the singular vectors of the LoRA-updated weights 
+                                    <i>W<sub>new</sub></i> and the pre-trained weights <i>W</i>. Subsequently, we resolve the sign ambiguity in SVD and obtain the top <i>k</i> 
+                                    sign-corrected left and right singular vectors (<i>U<sup>k</sup><sub>new</sub></i> and <i>V<sup>k</sup><sub>new</sub></i>) of <i>W<sub>new</sub></i> 
+                                    and those (<i>U<sup>k</sup></i> and <i>V<sup>k</sup></i>) of <i>W</i>. The alignment loss 
+                                    <i>ℒ<sub>align</sub></i> is calculated between <i>U<sup>k</sup><sub>new</sub></i>, <i>U<sup>k</sup></i>, and <i>V<sup>k</sup><sub>new</sub></i>, 
+                                    <i>V<sup>k</sup></i> in order to align the singular vectors. This results in LoRA-A retaining performance on the pre-trained tasks. 
+                                    <em>Graphs are drawn for representation purposes only.</em>
                                 </p>
                             </div>
                         </div>
@@ -193,15 +204,16 @@
                     <!-- Abstract. -->
                     <div class="columns is-centered has-text-centered">
                         <div class="column is-four-fifths">
-                            <h2 class="title is-3">Results and Comparison</h2>
+                            <h2 class="title is-3">Quantitative and Qualitative Comparisons</h2>
                             <div class="content has-text-justified proposed-approach">
                                 <h5 class="subtitle has-text-centered"></h5>
                                 <img src="./static/images/table.png" alt="" border="0" height="500" width="1500">
-                                <p> Quantitative comparisons of AWRaCLe with state-of-the-art approaches on all-weather image restoration benchmarks. AWRaCLe achieves a significant improvement in performance
-                                over SOTA.</p>
+                                <p>Quantitative comparisons of LoRA and LoRA-A with the pre-trained and fine-tuned versions of PromptIR~\cite{promptir} and TransWeather~\cite{transw}
+                                    for the novel task of raindrop removal.</p>
                                 <img src="./static/images/qual.png" alt="" border="0" height="500" width="1500">
                                 <p>
-                                    Qualitative comparisons of AWRaCLe with state-of-the-art-approaches for dehazing, desnowing and deraining tasks.
+                                    Qualitative comparisons of fine-tuning, LoRA and LoRA-A for the novel task of raindrop removal using PromptIR pre-trained for defogging, deraining and desnowing.
+                                    Results for one of the pre-training tasks (defogging) is also shown.
                                 </p>
                             </div>
                         </div>
@@ -218,21 +230,20 @@
                     <!-- Abstract. -->
                     <div class="columns is-centered has-text-centered">
                         <div class="column is-four-fifths">
-                            <h2 class="title is-3">Analysis</h2>
+                            <h2 class="title is-3">Results on Downstream tasks</h2>
                             <div class="content has-text-justified proposed-approach">
                                 <h5 class="subtitle has-text-centered"></h5>
-                                <img src="./static/images/dce.png" alt="" border="0" height="500" width="1500">
-                                <p> DCE block activations overlayed on the degraded and clean image of the context pair. The DCE blocks capture attributes of degradations such
-                                    as the spatially varying characteristics of haze and sparseness of snow. Yellow-High, Blue-Low</p>
-                                <img src="./static/images/tsne.png" alt="" border="0" height="500" width="1500">
+                                <img src="./static/images/seg.png" alt="" border="0" height="500" width="1500">
+                                <p> 
+                                    Predictions of Mask2Former~\cite{mask2former} on novel task of raindrop removal and pre-training task of defogging. 
+                                    After restoration using LoRA and LoRA-A, the results improve significantly. Furthermore, LoRA-A yields better segmentation results for the pre-training task of defogging.
+                                </p>
+                                <img src="./static/images/depth.png" alt="" border="0" height="500" width="1500">
                                 <p>
-                                    t-SNE plot of DCE block outputs for hazy, rainy and snowy context pairs. The clusters are well separated.
+                                    Predictions of Depth-Anything~\cite{depthanything} on the novel task of raindrop removal and pre-training task of defogging. 
+                                    The predictions improve significantly after restoration using LoRA and LoRA-A. LoRA-A yields better depth results for the pre-training task of defogging.
                                 </p>
                                 
-                                <img src="./static/images/cf.png" alt="" border="0" height="500" width="1500">
-                                <p>
-                                    Comparison of activations of the restoration network prior to CF and after CF. After CF, the degradation information in the activation is significantly enhanced.
-                                </p>
                             </div>
                         </div>
                     </div>
