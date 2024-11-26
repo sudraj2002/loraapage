@@ -160,12 +160,13 @@
                             semantic segmentation and depth estimation. 
                         </p>
                     </div>
+                    
                      <img src="./static/images/wacv2025.png" alt="" style="border:0; height:500px; width:1500px;">
                         <div class="content has-text-justified">
                         <p>
                           The AWIR model shown above is pre-trained for fog, rain and snow, for which it works well. 
-                            However, it fails for the novel or unseen task of raindrop removal. 
-                            The performance for raindrop removal improves significantly after parameter efficient adaptation using LoRA.
+                          However, it fails for the novel or unseen task of raindrop removal. 
+                          The performance for raindrop removal improves significantly after parameter efficient adaptation using LoRA.
                         </p>
                         </div>
                 </div>
@@ -183,7 +184,7 @@
                             <div class="content has-text-justified proposed-approach">
                                 <h5 class="subtitle has-text-centered"></h5>
 
-                                <img src="./static/images/block.png" alt="" border=0 height=500 width=1500></img></
+                                <img src="./static/images/icra_block.png" alt="" border=0 height=500 width=1500></img></
                                 <p>
                                     Illustration of the working of (a) LoRA and (b) LoRA-Align (LoRA-A). LoRA-A uses SVD to obtain the singular vectors of the LoRA-updated weights 
                                     <i>W<sub>new</sub></i> and the pre-trained weights <i>W</i>. Subsequently, we resolve the sign ambiguity in SVD and obtain the top <i>k</i> 
@@ -207,9 +208,11 @@
                             <h2 class="title is-3">Quantitative and Qualitative Comparisons</h2>
                             <div class="content has-text-justified proposed-approach">
                                 <h5 class="subtitle has-text-centered"></h5>
-                                <img src="./static/images/table.png" alt="" border="0" height="500" width="1500">
-                                <p>Quantitative comparisons of LoRA and LoRA-A with the pre-trained and fine-tuned versions of PromptIR~\cite{promptir} and TransWeather~\cite{transw}
-                                    for the novel task of raindrop removal.</p>
+                                <img src="./static/images/quant.png" alt="" border="0" height="500" width="1500">
+                                <p>
+                                    Quantitative comparisons of LoRA and LoRA-A with the pre-trained and fine-tuned versions of PromptIR~\cite{promptir} and TransWeather~\cite{transw}
+                                    for the novel task of raindrop removal.
+                                </p>
                                 <img src="./static/images/qual.png" alt="" border="0" height="500" width="1500">
                                 <p>
                                     Qualitative comparisons of fine-tuning, LoRA and LoRA-A for the novel task of raindrop removal using PromptIR pre-trained for defogging, deraining and desnowing.
